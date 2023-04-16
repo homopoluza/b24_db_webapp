@@ -28,4 +28,13 @@ resource "aws_instance" "test_server" {
   tags = {
     Name = "test-server"
   }
+
+  # provisioner "local-exec" {
+  #   command = "ansible-playbook -T 180 -i '${aws_instance.test_server.public_ip},' playbook.yml --private-key=/home/homopoluza/.ssh/aws.pem"
+  #   working_dir = "../ansible"
+  #   environment = {
+  #     ANSIBLE_HOST_KEY_CHECKING = "False"
+  #   }
+  #   when = create
+  # }
 }

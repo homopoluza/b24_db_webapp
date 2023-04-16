@@ -12,7 +12,7 @@ locals {
 
 resource "local_file" "inventory" {
   content  = local.inventory
-  filename = "${path.module}/inventory.ini"
+  filename = "../ansible/inventory.ini"
   file_permission = "0644"
 
 }

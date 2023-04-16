@@ -1,0 +1,111 @@
+---
+- name: Install PHP 8.2
+  hosts: all
+  become: true
+  tasks:
+    - name: Add Ondřej Surý PPA repository
+      apt_repository:
+        repo: 'ppa:ondrej/php'
+
+    - name: Install PHP 8.2 and required extensions
+      apt:
+        name:
+          - php8.2
+          - php8.2-cli
+          - php8.2-fpm
+          - php8.2-mysql
+          - php8.2-curl
+          - php8.2-gd
+          - php8.2-intl
+          - php8.2-mbstring
+          - php8.2-soap
+          - php8.2-xml
+          - php8.2-zip
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+        upgrade: yes
+        install_recommends: no
+
+    - name: Restart PHP-FPM
+      service:
+        name: php8.2-fpm
+        state: restarted
+
+- name: Install Nginx and configure test site
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Delete default site symlink
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Copy custom site configuration
+      copy:
+        src: ./test.oonf
+        dest: /etc/nginx/sites-available/test.conf
+        mode: '0644'
+
+    - name: Create symlink for custom site
+      file:
+        src: /etc/nginx/sites-available/test.conf
+        dest: /etc/nginx/sites-enabled/test.conf
+        state: link
+
+    - name: Copy www
+      become: true
+      copy:
+        src: ../www/test_server
+        dest: /var/www/test_server
+
+    - name: Allow Nginx through UFW
+      become: true
+      ansible.builtin.command: ufw allow 'Nginx Full'
+    - name: Enable UFW
+      become: true
+      ansible.builtin.command: ufw enable
+
+- name: Install MySQL and import database
+  hosts: all
+  become: true
+  tasks:
+    - name: Install MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+  # - name: Import database dump
+  #   become: true
+  #   ansible.builtin.mysql_db:
+  #     state: import
+  #     name: my_database
+  #     target: /path/to/my_database.sql
+  #     login_user: my_user
+  #     login_password: my_password
+  #     login_host: localhost
+
+  #   - name: Import database dump
+  #   become: true
+  #   ansible.builtin.mysql_db:
+  #     state: import
+  #     name: my_database
+  #     target: /path/to/my_database.sql
+  #     login_user: my_user
+  #     login_password: my_password
+  #     login_host: localhost
+
+# - name: Obtain Let's Encrypt SSL/TLS certificate
+#     community.crypto.letsencrypt:
+#         email: your_email@example.com
+#         domains:
+#           - example.com
+#           - www.example.com
+#         webroot_path: /var/www/html
+#         rsa_key_size: 2048
+#       become: true

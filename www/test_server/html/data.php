@@ -30,12 +30,16 @@
             <th>text</th>
             <th>number1</th>
             <th>number2</th>
+            <th>sum</th>
+
         </tr>
             <?php foreach ($result as $row): ?>
             <tr>
                 <td><?php echo $row['text'] ?></td>
                 <td><?php echo $row['number1'] ?></td>
                 <td><?php echo $row['number2'] ?></td>
+                <td><?php echo $row['sum'] ?></td>
+
             </tr>
             <?php endforeach; ?>
     </table>

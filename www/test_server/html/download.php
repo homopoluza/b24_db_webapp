@@ -26,9 +26,8 @@ $activeSheet = $spreadsheet->getActiveSheet();
 $activeSheet->setCellValue('A1', 'id');
 $activeSheet->setCellValue('B1', 'text');
 $activeSheet->setCellValue('C1', 'number1');
-$activeSheet->setCellValue('D1', 'number2');
-
-    
+$activeSheet->setCellValue('D1', 'number2');    
+$activeSheet->setCellValue('E1', 'sum');    
     
 $i = 2;
 foreach ($result as $row):
@@ -36,6 +35,8 @@ foreach ($result as $row):
     $activeSheet->setCellValue('B'.$i , $row['text']);
     $activeSheet->setCellValue('C'.$i , $row['number1']);
     $activeSheet->setCellValue('D'.$i , $row['number2']);
+    $activeSheet->setCellValue('E'.$i , $row['sum']);
+
     $i++;
 endforeach;
 

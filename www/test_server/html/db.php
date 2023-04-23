@@ -1,13 +1,14 @@
 <?php
 
+include 'settings.php';
+
 $host = "localhost";
 $dbname = "excel";
 $username = "root";
-$password = "Jk8$#pLmN0vQ";
 
 $mysqli = new mysqli(hostname: $host,
                      username: $username,
-                     password: $password,
+                     password: PASSWORD_DB,
                      database: $dbname);
                      
 if ($mysqli->connect_errno) {

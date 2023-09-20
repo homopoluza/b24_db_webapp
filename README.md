@@ -9,7 +9,7 @@ The app allows the user to receive, store, and process information about success
 
 ## Note
 
-Ansible playbook isn't working correctly.
+The Ansible playbook doesn't work correctly.
 
 ## License
 
